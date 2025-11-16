@@ -1,0 +1,401 @@
+ :root {
+     --neon-primary: #00f3ff;
+     --neon-accent: #ff00c8;
+     --background: #0a0a1a;
+     --glass-opacity: 0.1;
+     --card-bg: rgba(10, 10, 30, 0.8);
+ }
+
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+     background: var(--background);
+     min-height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     overflow: hidden;
+     color: white;
+     position: relative;
+ }
+
+ body::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background:
+         linear-gradient(rgba(10, 10, 30, 0.9), rgba(10, 10, 30, 0.9)),
+         repeating-linear-gradient(0deg,
+             transparent,
+             transparent 2px,
+             rgba(0, 243, 255, 0.05) 2px,
+             rgba(0, 243, 255, 0.05) 4px);
+     pointer-events: none;
+     z-index: -1;
+ }
+
+ .credit-card-container {
+     perspective: 1500px;
+     width: 100%;
+     max-width: 450px;
+     height: 280px;
+     position: relative;
+     transform-style: preserve-3d;
+     transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+ }
+
+ @media (prefers-reduced-motion: reduce) {
+     .credit-card-container {
+         transition: none;
+     }
+ }
+
+ .credit-card-container.flipped {
+     transform: rotateY(180deg);
+ }
+
+ .credit-card {
+     width: 100%;
+     height: 100%;
+     position: absolute;
+     backface-visibility: hidden;
+     border-radius: 20px;
+     padding: 25px;
+     display: flex;
+     flex-direction: column;
+     box-shadow:
+         0 0 15px rgba(0, 243, 255, 0.5),
+         0 0 30px rgba(255, 0, 200, 0.3),
+         inset 0 0 15px rgba(255, 255, 255, 0.1);
+     background: var(--card-bg);
+     border: 1px solid var(--neon-primary);
+     overflow: hidden;
+ }
+
+ .credit-card::before {
+     content: '';
+     position: absolute;
+     top: -50%;
+     left: -50%;
+     width: 200%;
+     height: 200%;
+     background: linear-gradient(45deg,
+             transparent,
+             rgba(255, 255, 255, 0.1),
+             transparent);
+     transform: rotate(45deg);
+     animation: shimmer 3s infinite;
+     opacity: 0.3;
+     pointer-events: none;
+ }
+
+ @keyframes shimmer {
+     0% {
+         transform: translateX(-100%) translateY(-100%) rotate(45deg);
+     }
+
+     100% {
+         transform: translateX(100%) translateY(100%) rotate(45deg);
+     }
+ }
+
+ .front-side {
+     z-index: 2;
+ }
+
+ .back-side {
+     transform: rotateY(180deg);
+     z-index: 1;
+ }
+
+ /* Front Side Styles */
+ .issuer-logo {
+     align-self: flex-end;
+     font-weight: bold;
+     font-size: 1.2rem;
+     letter-spacing: 1px;
+     text-shadow: 0 0 10px var(--neon-primary);
+     margin-bottom: 20px;
+ }
+
+ .chip {
+     width: 50px;
+     height: 40px;
+     background: linear-gradient(135deg, #c9a35d 0%, #f1e0a2 100%);
+     border-radius: 8px;
+     position: relative;
+     margin-bottom: 25px;
+     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+ }
+
+ .chip::before {
+     content: '';
+     position: absolute;
+     top: 5px;
+     left: 5px;
+     right: 5px;
+     bottom: 5px;
+     border: 1px solid rgba(0, 0, 0, 0.2);
+     border-radius: 5px;
+ }
+
+ .card-number {
+     font-family: 'Courier New', monospace;
+     font-size: 1.4rem;
+     letter-spacing: 3px;
+     margin-bottom: 25px;
+     text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+ }
+
+ .card-details {
+     display: flex;
+     justify-content: space-between;
+     width: 100%;
+ }
+
+ .cardholder-name {
+     font-size: 1rem;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+ }
+
+ .expiry {
+     font-size: 1rem;
+ }
+
+ .card-type {
+     position: absolute;
+     bottom: 25px;
+     right: 25px;
+     background: var(--neon-accent);
+     color: white;
+     padding: 5px 15px;
+     border-radius: 20px;
+     font-size: 0.8rem;
+     font-weight: bold;
+     box-shadow: 0 0 10px var(--neon-accent);
+ }
+
+ .avatar-placeholder {
+     position: absolute;
+     bottom: 25px;
+     left: 25px;
+     width: 40px;
+     height: 40px;
+     border-radius: 50%;
+     background: radial-gradient(circle at 30% 30%, #fff, #aaa);
+     border: 1px solid rgba(255, 255, 255, 0.3);
+     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+ }
+
+ /* Back Side Styles */
+ .magnetic-stripe {
+     height: 50px;
+     background: #111;
+     margin-top: 30px;
+     margin-bottom: 30px;
+     position: relative;
+ }
+
+ .signature-panel {
+     height: 40px;
+     background: repeating-linear-gradient(-45deg,
+             #fff,
+             #fff 5px,
+             #f0f0f0 5px,
+             #f0f0f0 10px);
+     margin-bottom: 20px;
+     position: relative;
+     border: 1px solid #ddd;
+ }
+
+ .cvv-panel {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 30px;
+ }
+
+ .cvv-display {
+     background: #eee;
+     color: #333;
+     padding: 8px 15px;
+     border-radius: 4px;
+     font-family: 'Courier New', monospace;
+     font-size: 1.2rem;
+     letter-spacing: 2px;
+ }
+
+ .reveal-btn {
+     background: transparent;
+     color: var(--neon-primary);
+     border: 1px solid var(--neon-primary);
+     padding: 8px 15px;
+     border-radius: 4px;
+     cursor: pointer;
+     font-size: 0.9rem;
+     transition: all 0.3s ease;
+ }
+
+ .reveal-btn:hover,
+ .reveal-btn:focus {
+     background: rgba(0, 243, 255, 0.1);
+     box-shadow: 0 0 10px var(--neon-primary);
+     outline: none;
+ }
+
+ .bank-info {
+     font-size: 0.8rem;
+     line-height: 1.4;
+     color: #ccc;
+     margin-bottom: 20px;
+ }
+
+ .social-icons {
+     display: flex;
+     justify-content: center;
+     gap: 15px;
+     margin-bottom: 15px;
+ }
+
+ .social-icon {
+     width: 30px;
+     height: 30px;
+     border-radius: 50%;
+     background: rgba(255, 255, 255, 0.1);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     cursor: pointer;
+     transition: all 0.3s ease;
+ }
+
+ .social-icon:hover,
+ .social-icon:focus {
+     background: var(--neon-primary);
+     box-shadow: 0 0 10px var(--neon-primary);
+     transform: translateY(-3px);
+ }
+
+ .qr-placeholder {
+     width: 80px;
+     height: 80px;
+     background:
+         linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%),
+         linear-gradient(45deg, #fff 25%, transparent 25%, transparent 75%, #fff 75%);
+     background-size: 10px 10px;
+     background-position: 0 0, 5px 5px;
+     margin: 0 auto;
+     border: 1px solid #ddd;
+ }
+
+ /* Controls */
+ .controls {
+     position: absolute;
+     bottom: 30px;
+     left: 50%;
+     transform: translateX(-50%);
+     display: flex;
+     gap: 15px;
+ }
+
+ .control-btn {
+     background: rgba(255, 255, 255, 0.1);
+     color: white;
+     border: 1px solid var(--neon-primary);
+     padding: 10px 20px;
+     border-radius: 30px;
+     cursor: pointer;
+     font-size: 1rem;
+     transition: all 0.3s ease;
+ }
+
+ .control-btn:hover,
+ .control-btn:focus {
+     background: rgba(0, 243, 255, 0.2);
+     box-shadow: 0 0 15px var(--neon-primary);
+     outline: none;
+ }
+
+ /* Toast Notification */
+ .toast {
+     position: fixed;
+     bottom: 20px;
+     left: 50%;
+     transform: translateX(-50%) translateY(100px);
+     background: rgba(0, 0, 0, 0.8);
+     color: var(--neon-primary);
+     padding: 15px 30px;
+     border-radius: 30px;
+     border: 1px solid var(--neon-primary);
+     box-shadow: 0 0 15px var(--neon-primary);
+     opacity: 0;
+     transition: all 0.3s ease;
+     z-index: 1000;
+ }
+
+ .toast.show {
+     opacity: 1;
+     transform: translateX(-50%) translateY(0);
+ }
+
+ /* Glitch Effect */
+ @keyframes glitch {
+     0% {
+         transform: translate(0);
+     }
+
+     20% {
+         transform: translate(-3px, 3px);
+     }
+
+     40% {
+         transform: translate(-3px, -3px);
+     }
+
+     60% {
+         transform: translate(3px, 3px);
+     }
+
+     80% {
+         transform: translate(3px, -3px);
+     }
+
+     100% {
+         transform: translate(0);
+     }
+ }
+
+ .glitch-effect {
+     animation: glitch 0.3s ease-in-out;
+ }
+
+ /* Responsive Design */
+ @media (max-width: 500px) {
+     .credit-card-container {
+         width: 90%;
+         height: 250px;
+     }
+
+     .credit-card {
+         padding: 20px;
+     }
+
+     .card-number {
+         font-size: 1.2rem;
+         letter-spacing: 2px;
+     }
+
+     .cardholder-name,
+     .expiry {
+         font-size: 0.9rem;
+     }
+ }
